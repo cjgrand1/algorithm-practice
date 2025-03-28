@@ -18,10 +18,18 @@ class TestGSOperation(unittest.TestCase):
              [2, 3, 4, 5, 1],
              [1, 5, 4, 3, 2],
              [4, 2, 5, 3, 1] ]
-        N = 5
+        M2 = [ [2, 1, 3],
+              [3, 1, 2],
+              [3, 2, 1] ]
+        W2 = [ [2, 1, 3],
+              [3, 2, 1],
+              [3, 1, 2] ]
+
+        test1 = algs.StableMatching()
 
         # tests
-        self.assertEqual(algs.GS(M, W, N), [0, 2, 1, 4, 3])
+        self.assertEqual(test1.GaleShapley(M, W), ["(M, W)", "(1, 1)", "(2, 3)", "(3, 2)", "(4, 5)", "(5, 4)"])
+        self.assertEqual(test1.GaleShapley(M2, W2), ["(M, W)", "(1, 2)", "(2, 1)", "(3, 3)"])
 
 # Running tests
 if __name__ == "__main__":
