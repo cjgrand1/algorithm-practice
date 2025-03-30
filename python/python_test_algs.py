@@ -25,11 +25,9 @@ class TestGSOperation(unittest.TestCase):
               [3, 2, 1],
               [3, 1, 2] ]
 
-        test1 = algs.StableMatching()
-
         # tests
-        self.assertEqual(test1.GaleShapley(M, W), ["(M, W)", "(1, 1)", "(2, 3)", "(3, 2)", "(4, 5)", "(5, 4)"])
-        self.assertEqual(test1.GaleShapley(M2, W2), ["(M, W)", "(1, 2)", "(2, 1)", "(3, 3)"])
+        self.assertEqual(algs.GaleShapley(M, W), ["(M, W)", "(1, 1)", "(2, 3)", "(3, 2)", "(4, 5)", "(5, 4)"])
+        self.assertEqual(algs.GaleShapley(M2, W2), ["(M, W)", "(1, 2)", "(2, 1)", "(3, 3)"])
 
 # Running tests
 if __name__ == "__main__":
