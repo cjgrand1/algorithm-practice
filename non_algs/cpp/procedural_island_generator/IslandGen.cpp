@@ -93,14 +93,16 @@ int** makeParticleMap(int width, int height, int windowX, int windowY,
     map[particleY][particleX]++;
 
     // repeat until current particle dies
-    for (int j = 0; j < maxLife; j++) {
+    for (int j = 1; j < maxLife; j++) {
       // pick a move at random, see if it is a valid move
       // if not valid, pick another random move until out of moves
       int moves[8] = {0, 1, 2, 3, 4, 5, 6, 7};
       bool changed = false;
 
       // randomly shuffle list of moves
-      random_shuffle(begin(moves), end(moves));
+      random_device rd;
+      mt19937 g(rd());
+      shuffle(begin(moves), end(moves), g);
 
       for (int j = 0; j < 8; j++) {
         if (moveExists(map, width, height, particleX, particleY, moves[j])) {
