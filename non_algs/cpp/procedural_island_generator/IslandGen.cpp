@@ -2,21 +2,23 @@
 #include <iostream>
 #include <queue>
 #include <random>
-#include <stack>
+#include <time.h>
 using namespace std;
 
 int** makeParticleMap(int, int, int, int, int, int, int, int);
 bool moveExists(int**, int, int, int, int, int);
 int findMax(int**, int, int);
-void normalizeMap(int**, int, int, int, int);
+void normalizeMap(int**, int, int, int, int, char);
 void clearIntArray(int**, int);
 void clearChaArray(char**, int);
 
 int main(int argc, char** argv) {
   int width, height, windowX, windowY, winWidth, winHeight, numParticles,
       maxLife, waterLine;
-  char presetVal;
+  char presetVal, colorVal;
   bool preset;
+
+  srand(time(NULL)); // seed the random number generator
 
   // use preset or not
   do {
@@ -32,8 +34,8 @@ int main(int argc, char** argv) {
 
   // get user input
   if (preset) {
-    width = 50, height = 50, windowX = 20, windowY = 20, winWidth = 10, winHeight
-    = 10, numParticles = 50, maxLife = 500, waterLine = 50;
+    width = 50, height = 50, windowX = 20, windowY = 20, winWidth = 10,
+    winHeight = 10, numParticles = 50, maxLife = 500, waterLine = 50;
   } else {
     do {
       cout << "To begin, enter map width: ";
@@ -73,6 +75,12 @@ int main(int argc, char** argv) {
     } while (!(waterLine >= 40 && waterLine <= 200));
   }
 
+  do {
+    cout << "Do you wish to print in color? y or n: ";
+    cin >> colorVal;
+  } while (!(colorVal == 'y' || colorVal == 'Y' || colorVal == 'n' ||
+             colorVal == 'N'));
+
   // generate map
   int** map = makeParticleMap(width, height, windowX, windowY, winWidth,
                               winHeight, numParticles, maxLife);
@@ -81,7 +89,7 @@ int main(int argc, char** argv) {
   int max = findMax(map, width, height);
 
   // normalize map and print
-  normalizeMap(map, width, height, max, waterLine);
+  normalizeMap(map, width, height, max, waterLine, colorVal);
 }
 
 /*
@@ -233,7 +241,8 @@ int findMax(int** map, int width, int height) {
  * return a new array instead if you want to hold onto the og map data for some
  * reason.
  */
-void normalizeMap(int** map, int width, int height, int maxVal, int waterLine) {
+void normalizeMap(int** map, int width, int height, int maxVal, int waterLine,
+                  char colorVal) {
   // normalize the map to be constant values between 0 - 255
   // divide each value by the largest, and multiply by 255
   for (int i = 0; i < height; i++) {
@@ -269,13 +278,43 @@ void normalizeMap(int** map, int width, int height, int maxVal, int waterLine) {
   }
 
   // print results
-  for (int i = 0; i < height; i++) {
-    for (int j = 0; j < width; j++) {
-      // printf("\033[97m%c", output[i][j]);
-      // cout << map[i][j];
-      printf("%c ", output[i][j]);
+  if (colorVal == 'n' || colorVal == 'N') {
+    // print without color
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        printf("%c ", output[i][j]);
+      }
+      cout << endl;
     }
-    cout << endl;
+  } else {
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        // printf("%c ", output[i][j]);
+        char val = output[i][j];
+        switch (val) {
+          case '#':
+            printf("\033[36m%c ", val);  // blue = deep water
+            break;
+          case '~':
+            printf("\033[36m%c ", val);  // cyan = shallow water
+            break;
+          case '.':
+            printf("\033[33m%c ", val);  // color = shore
+            break;
+          case '-':
+            printf("\033[92m%c ", val);  // light green = field
+            break;
+          case '*':
+            printf("\033[32m%c ", val);  // green = forests
+            break;
+          case '^':
+            printf("\033[97m%c ", val);  // white = mountains
+            break;
+        }
+        printf("\033[0m");  // reset color
+      }
+      cout << endl;
+    }
   }
 
   // clear memory
