@@ -21,6 +21,20 @@ def main():
 
 
 def makeParticleMap(width, height, windowX, windowY, winWidth, winHeight, numParticles, maxLife):
+    """This function builds the array for the map data and performs particle roll algorithm to populate
+    the array with map data.
+
+    Args:
+        width: Width of 2D array
+        height: Height of 2D array
+        windowX: Starting/Minimum x point for the particle drop window
+        windowY: Starting/Minimum y point for the particle drop window
+        winWidth: Width of particle drop window (<= width - windowX)
+        winHeight: Height of particle drop window (<= height - windowY)
+        numParticles: Number of unique particles to drop in the drop window
+        maxLife: Maximum life of each particle
+    """
+
     # create map based on user input
     map = []
     for _ in range(height):
@@ -81,8 +95,18 @@ def makeParticleMap(width, height, windowX, windowY, winWidth, winHeight, numPar
 
     return map
 
-# This function
 def moveExists(map, width, height, x, y, move) -> bool:
+    """This function takes in a move to one of the 8 spots around x, y, and determines
+    if a valid move is possible. Return true if move is valid.
+
+    Args:
+        map: The 2D array
+        width: Width of the 2D array
+        height: Height of the 2D array
+        x: Given x coordinate
+        y: Given y coordinate
+        move: Tells which of the 8 surrounding indices to check
+    """
     match move:
         case 0: # top
             if (y - 1) >= 0 and map[y - 1][x] <= map[y][x]:
@@ -130,6 +154,13 @@ def moveExists(map, width, height, x, y, move) -> bool:
 
 # This function finds the max value in the map and returns it
 def findMax(map, width, height) -> int:
+    """"This function finds the max value in the map and returns it.
+
+    Args:
+        map: 2D array
+        width: Width of 2D array
+        height: Height of 2D array    
+    """
     max = 0
     for i in range(height):
         for j in range(width):
@@ -139,6 +170,16 @@ def findMax(map, width, height) -> int:
     return max
 
 def normalizeMap(map, width, height, maxVal, waterLine):
+    """"Performs the normalization operation on the map data.
+
+    Args:
+        map: 2D array
+        width: Width of 2D array
+        height: Height of 2D array
+        maxVal: Largest value in 2D array
+        waterLine: Given waterLine value for map gen    
+    """
+
     # normalize the map to be constant values between 0 - 255
     # divide each value by the largest, and multiply by 255
     for i in range(height):

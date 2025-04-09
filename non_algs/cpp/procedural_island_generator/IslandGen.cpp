@@ -113,7 +113,7 @@ int** makeParticleMap(int width, int height, int windowX, int windowY,
     map[particleY][particleX]++;
 
     // repeat until current particle dies
-    for (int j = 0; j < maxLife; j++) {
+    for (int a = 0; a < maxLife; a++) {
       // pick a move at random, see if it is a valid move
       // if not valid, pick another random move until out of moves
       int moves[8] = {0, 1, 2, 3, 4, 5, 6, 7};
@@ -174,7 +174,7 @@ int** makeParticleMap(int width, int height, int windowX, int windowY,
 }
 
 /*
- * This function takes in a move to one of the 8 spots aroudn x, y, and
+ * This function takes in a move to one of the 8 spots around x, y, and
  * determines if a valid move is possible. Return true if move is valid.
  */
 bool moveExists(int** map, int width, int height, int x, int y, int move) {
@@ -225,7 +225,7 @@ bool moveExists(int** map, int width, int height, int x, int y, int move) {
 }
 
 /*
- * This function finds the max valud in the map and returns it
+ * This function finds the max value in the map and returns it
  */
 int findMax(int** map, int width, int height) {
   int max = 0;
